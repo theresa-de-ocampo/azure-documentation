@@ -28,12 +28,9 @@
 ## 4. Create a Web App
 
 - Create a new Web App using Linux for Containers.
-- Check the deplyoed website.
+- Check the deployed website.
 
-## 5. Create a Service Connection
-
-> [!WARNING]  
-> This is actually an incorrect step and was only included for learning purposes.
+## 5. Create a Docker Registry Connection for the Build & Push Stage
 
 - Service connections are authenticated connections between Azure Pipelines and external or remote services that you use to execute tasks in a job.
 - For example, your pipelines might use the following categories of service connections.
@@ -43,15 +40,21 @@
   - Services installed on remote computers such as an Azure Resource Manager service connection to an Azure Virtual Machine with a managed service identity.
   - External services such as a service connection to a Docker Registry, Kubernetes cluster, or Maven repository.
 - Go to **Project Settings** > **Pipelines** > **Service Connections**.
-- Select **Azure Resource Manager** as the type of service connection.
+- Select **Docker Registry** as the type of connection.
+- Select **Service Principal** as the the type of authentication.
+- On save, this will actually register an app. Immediately rename the application so you won't forget what it is for.
+
+## 6. Create an Azure Resource Manager Service Connection for the Deployment Stage
+
+- Create a new service connection. This time, select **Azure Resource Manager** as the type of service connection.
 - Limit the access to the resource group of the project.
 
   ![Service Connection](./assets/01-continuously-deploy-containers/03-service-connection.png)
 
-## 6. Write the YML File
+## 7. Write the YML File
 
 - You can just use the **Docker: Build and push an image to Azure Container Registry** template.
-- Upon using this template, this will actually create a different service connection. It did not pick up the service connection that you just created. That's why you'll suddenly have more service connections than you initially created.
+- Upon using this template, this will actually create a different Docker Registry service connection. It did not pick up the service connection that you just created. That's why you'll suddenly have more service connections than you initially created.
 
   ![Azure Resource Manager vs Docker Container Registry Service Connection](./assets/01-continuously-deploy-containers/04-multiple-service-connections.png)
 
@@ -82,7 +85,7 @@ Use a Service Principal when a **service** or a platform needs access to **resou
 You should use a Service Principal to provide registry access in headless scenarios. That is, an application, service, or script that must push or pull container registries in an automated or otherwise unattended manner.
 
 > [!NOTE]
-> **Headless Authentication** means no interactive log-in, think of popping up a browser window. Which really means, whatever needs to access your container registry can do so without user interaction.
+> Headless Authentication means no interactive log-in, think of popping up a browser window. Which really means, whatever needs to access your container registry can do so without user interaction.
 
 ### When to use a Managed Identity?
 

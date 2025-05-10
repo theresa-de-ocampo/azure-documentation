@@ -56,7 +56,7 @@ By default, `setAutoCollectConsole` is configured to exclude calls to `console.l
 ## [Azure App Service Logging vs. Application Insights Integration](https://learn.microsoft.com/en-us/answers/questions/498547/azure-app-service-logging-vs-application-insights)
 
 > [!TIP]
-> Is it enough to just configure Applicatio Insights?
+> Is it enough to just configure Application Insights?
 
 Azure provides built-in diagnostics mechanism - **App Service Logs** - to assist with debugging an App Service app. Basically, you will have to go through the logs to see what is happening. Nonetheless, you can query from the monitoring section.
 

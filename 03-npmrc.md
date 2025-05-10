@@ -31,7 +31,7 @@ Make sure to include both the scope and package names in your `package.json` fil
 So, if you have `{ @gourmade/utils }` at `package.json`, your `.npmrc` should look as follows.
 
 ```
-registry=https://pkgs.dev.azure.com/OrisonX/Gourmade/_packaging/Gourmade/npm/registry/
+@gourmade:registry=https://pkgs.dev.azure.com/OrisonX/Gourmade/_packaging/Gourmade/npm/registry/
 
 always-auth=true
 ```

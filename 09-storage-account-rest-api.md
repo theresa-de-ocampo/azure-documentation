@@ -1,8 +1,5 @@
 # Blob Service REST API
 
-> [!WARNING]
-> Draft, haven't fully understood the it yet.
-
 ## Authentication
 
 1. Shared Access Signature

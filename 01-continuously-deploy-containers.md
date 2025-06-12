@@ -106,4 +106,4 @@ If you are choosing managed identity while creating service connection in Azure 
 
 ## 8. Write the YML file for the Release Stage
 
-- Use the Service Connectio that you created from <a href="#7-create-an-azure-resource-manager-service-connection-for-the-deployment-stage">step #7</a>.
+- Use the Service Connection that you created from <a href="#7-create-an-azure-resource-manager-service-connection-for-the-deployment-stage">step #7</a>.

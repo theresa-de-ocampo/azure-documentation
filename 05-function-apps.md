@@ -102,3 +102,7 @@ Aside from the portal, you can also run functions in production using VS Code in
 
 - `Azure Functions: Execute Function Now`
 - Select the Azure icon in the activity bar > Resources > Function App > gourmade-fa > Functions
+
+Invocations from VS Code tend to have more delays.
+
+![VS Code Invocations](assets/05-function-apps/10-vs-code-invocations.png)

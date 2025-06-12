@@ -16,3 +16,10 @@ az webapp log tail \
   --resource-group <group-name>
   --name <app-name>
 ```
+
+```bash
+az storage account management-policy create \
+  --account-name <storage-account> \
+  --policy @policy.json \
+  --resource-group <resource-group>
+```

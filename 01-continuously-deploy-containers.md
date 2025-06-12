@@ -64,6 +64,8 @@
 
   ![App Registrations](assets/01-continuously-deploy-containers/08-app-registrations.png)
 
+- Note that the client ID and client secret are not referenced in the YML file. This is abstracted away using the service connection. The Docker Service Registry Connection handles token acquisition behind the scenes.
+
 ### When to use a Service Principal?
 
 While most articles would recommend using a Managed Identiy over Service Principal because no credentials have to be stored and rotated, Microsoft does not recommend it for this case.

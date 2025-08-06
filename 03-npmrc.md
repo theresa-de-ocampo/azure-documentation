@@ -81,6 +81,16 @@ node -e "require('readline') .createInterface({input:process.stdin,output:proces
 3. Copy the Base64 encoded value.
 4. Replace both `[BASE64_ENCODED_PERSONAL_ACCESS_TOKEN]`.
 
+## [How to specify which identity to use with `vsts-npm-auth`?](https://stackoverflow.com/questions/78022170/how-do-i-specify-which-identity-to-use-with-vsts-npm-auth)
+
+The current latest version - `v0.43.0.0` - is problematic for multiple accounts. It does not provide parameters for selecting an account nor reset or change existing credentials.
+
+As a workaround, rollback to `v0.42.1.0`.
+
+1. `npm uninstall -g vsts-npm-auth`
+2. `npm install -g vsts-npm-auth@0.42.1 --registry https://registry.npmjs.com --always-auth false`
+3. `vsts-npm-auth -config .npmrc -F -V Detailed` - this will force you to sign in again.
+
 ## [Accessing from the Docker Build](https://medium.com/@sikorski.m.p/accessing-azure-artifacts-npm-feed-from-the-docker-build-2e084005315e)
 
 TODO

@@ -7,5 +7,6 @@
 5. [Azure Function Apps](./05-function-apps.md)
 6. [Microsoft Identity Platform](./06-identity-platform.md)
 7. [Azure Storage Account Introduction](./07-storage-account-intro.md)
-8. [Authorize Requests to Azure Storage Account](./08-storage-account-auth.md)
-9. [Azure Storage REST API](./09-storage-account-rest-api.md)
+8. [Implicit vs. Authorization Code](./08-implicit-vs-auth-code.md)
+9. [Authorize Requests to Azure Storage Account](./09-storage-account-auth.md)
+10. [Azure Storage REST API](./10-storage-account-rest-api.md)

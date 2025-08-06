@@ -20,14 +20,13 @@ This is the issue that Authorization Code flow is trying to mitigate.
 
      ![Platform Configuration](assets/08-implicit-vs-auth-code/03-app-reg-auth.png)
 
-3. Generate a client secret.
-4. Go to **Manage** > **API Permissions**. By default, Microsoft Graph's `User.Read` has already been added. This permission is enough since we will only be generating an auth token to call the **Microsoft Graph API**.
+3. Go to **Manage** > **API Permissions**. By default, Microsoft Graph's `User.Read` has already been added. This permission is enough since we will only be generating an auth token to call the **Microsoft Graph API**.
 
-5. Go to **Overview** > **Endpoints**. Copy the OAuth 2.0 Authorization Endpoint (v2).
+4. Go to **Overview** > **Endpoints**. Copy the OAuth 2.0 Authorization Endpoint (v2).
 
    [https://login.microsoftonline.com/your-directory-id/oauth2/v2.0/authorize](https://login.microsoftonline.com/your-directory-id/oauth2/v2.0/authorize)
 
-6. Go to **Postman** > **Authorization**.
+5. Go to **Postman** > **Authorization**.
 
    1. Set **Auth Type** to _OAuth 2.0_.
    2. Set **Grant Type** to _Implicit Grant Type_.
@@ -39,7 +38,7 @@ This is the issue that Authorization Code flow is trying to mitigate.
 
    ![Access Token from Implicit Grant Flow](assets/08-implicit-vs-auth-code/04-access-token-implicit.png)
 
-7. Test the access token by listing the blobs. Set the `Authorization` and `x-ms-version` headers.
+6. Test the access token by listing the blobs. Set the `Authorization` and `x-ms-version` headers.
 
 ## PKCE with Postman
 

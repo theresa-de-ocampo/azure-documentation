@@ -55,7 +55,7 @@ To request tokens for Azure Storage, specify the value `https://storage.azure.co
 2.  Go to **Manage** > **Authentication** > **Add a Platform** > **Single Page Application**.
 
     - Provide `https://oauth.pstmn.io/v1/callback` for the redirect URI.
-    - Check both A**ccess tokens (used for implicit flows)** and **ID tokens (used for implicit and hybrid flows)**.
+    - Check both **access tokens (used for implicit flows)** and **ID tokens (used for implicit and hybrid flows)**.
 
       ![Platform Configuration](assets/08-implicit-vs-auth-code/03-app-reg-auth.png)
 
@@ -91,3 +91,16 @@ To request tokens for Azure Storage, specify the value `https://storage.azure.co
     ![Access Token Request](assets/09-storage-account-auth/04-access-token-request.png)
 
 6.  Test the access token by listing the blobs. Set the `Authorization` and `x-ms-version` headers.
+
+Notice that you didn't need a `client_secret` for any of the steps. This is because you used Authorization Code with PKCE which is designed for public client like:
+
+- Single Page Apps (SPAs)
+  - Runs entirely in the browser.
+  - Since the entire source code is available to the browser, they cannot maintain the confidentiality of a client secret, so a secret is not used for these apps.
+- Mobile Apps
+  - These apps are downloaded entirely to the device before they are run, but in this case you're downloading a binary file instead of uncompiled source code.
+  - Hence, mobile apps can be reverse-engineered.
+  - Anything bundled with the app - including secrets - can be extracted.
+- Desktop Apps
+
+These clients can't safely store a `client_secret`, so Azure AD allows them authenticate without one by using a Code Verifier + Code Challenge mechanism.

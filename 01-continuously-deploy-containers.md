@@ -5,7 +5,7 @@
 - Authenticate with Azure Repos
 - You can set-up the remote origin using either SSH or HTTPs. Git now recommends HTTPs.
 - If you're using SSH, it is recommended to use **Personal Access Tokens** (PAT). Another way would be to authenticate using **SSH keys**. You can set-up PATs or SSH keys from the **User Settings** of Azure DevOps.
-- On the other hand, if you're using HTTPs, use _Git Credential Manger_ which is available upon installing Git. On your initial push, a pop-up will open asking for to log-in.
+- On the other hand, if you're using HTTPs, use _Git Credential Manger_ which is available upon installing Git. On your initial push, a pop-up will open asking you to log-in.
 
 ## 2. Create your Azure Container Registry
 

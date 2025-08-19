@@ -61,7 +61,7 @@ To request tokens for Azure Storage, specify the value `https://storage.azure.co
 
 3.  Go to **Manage** > **API Permissions**. By default, Microsoft Graph's `User.Read` has already been added. Add another permission for the Azure Storage API, and select `user_impersonation`.
 
-4.  Go to **Postman** > **Authorization**, and get an authorization.
+4.  Go to **Postman** > **Authorization**, and get an authorization code.
 
     1. Set **Auth Type** to _OAuth 2.0_.
     2. Set **Grant Type** to _Authorization Code (With PKCE)_.

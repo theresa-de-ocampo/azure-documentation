@@ -28,4 +28,4 @@ The difference is that a **private endpoint** is a NIC, and a **private link** i
 
 Private endpoints will have a NIC on a VNET that will let you securely bypass NSGs and send traffic directly to the resource the private endpoint is associated to.
 
-On the other hand, a private link can be paired with a private endpoint to allow traffice to a VNET or NSG. You would setup the private link first and then create the private endpoint to point to the said private link.
+On the other hand, a private link can be paired with a private endpoint to allow traffic to a VNET or NSG. You would setup the private link first and then create the private endpoint to point to the said private link.

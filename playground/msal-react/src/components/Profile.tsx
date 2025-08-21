@@ -1,33 +1,62 @@
-import { useMsalAuthentication } from "@azure/msal-react";
-import { InteractionType } from "@azure/msal-browser";
+import { useMsal } from "@azure/msal-react";
+import type { AccountInfo } from "@azure/msal-browser";
 import { useEffect, useState } from "react";
 
 import { retrieveData } from "../api";
 
 export default function Profile() {
-  const [displayData, setDisplayData] = useState();
+  type MsProfile = {
+    id: string;
+    displayName: string;
+    mail: string;
+  };
 
-  const { result, error, acquireToken } = useMsalAuthentication(
-    InteractionType.Redirect,
-    {
+  const { instance } = useMsal();
+  const [profileData, setProfileData] = useState<MsProfile>();
+
+  async function getProfile(account: AccountInfo) {
+    const { accessToken } = await instance.acquireTokenSilent({
+      account,
       scopes: ["user.read"]
-    }
-  );
+    });
 
-  console.log(result);
+    const data = await retrieveData(
+      "https://graph.microsoft.com/v1.0/me",
+      accessToken
+    );
+
+    setProfileData(data);
+  }
 
   useEffect(() => {
-    if (!displayData) {
-      // console.log("i entered");
-      // console.log(result);
-      if (error) {
-        console.error(error);
-      } else if (result) {
-        const accessToken = result.accessToken;
-        // console.log(accessToken);
+    if (!profileData) {
+      const account = instance.getActiveAccount();
+
+      if (account) {
+        getProfile(account);
       }
     }
-  }, [displayData, error, result]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profileData]);
 
-  return <div>Profile</div>;
+  if (!profileData) return <p>Loading</p>;
+
+  return (
+    <table>
+      <tbody>
+        <tr>
+          <th>ID</th>
+          <td>{profileData.id}</td>
+        </tr>
+        <tr>
+          <th>Name</th>
+          <td>{profileData.displayName}</td>
+        </tr>
+        <tr>
+          <th>Mail</th>
+          <td>{profileData.mail}</td>
+        </tr>
+      </tbody>
+    </table>
+  );
 }

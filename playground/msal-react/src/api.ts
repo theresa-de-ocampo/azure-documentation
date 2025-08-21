@@ -11,7 +11,8 @@ export async function retrieveData(endpoint: string, accessToken: string) {
   let response;
 
   try {
-    response = await fetch(endpoint, options);
+    const result = await fetch(endpoint, options);
+    response = result.json();
   } catch (error) {
     console.error(error);
   }

@@ -7,19 +7,24 @@ import { retrieveData } from "../api";
 export default function Profile() {
   const [displayData, setDisplayData] = useState();
 
-  const { result, error } = useMsalAuthentication(InteractionType.Redirect, {
-    scopes: ["user.read"]
-  });
+  const { result, error, acquireToken } = useMsalAuthentication(
+    InteractionType.Redirect,
+    {
+      scopes: ["user.read"]
+    }
+  );
+
+  console.log(result);
 
   useEffect(() => {
     if (!displayData) {
-      console.log("i entered");
-      console.log(result);
+      // console.log("i entered");
+      // console.log(result);
       if (error) {
         console.error(error);
       } else if (result) {
         const accessToken = result.accessToken;
-        console.log(accessToken);
+        // console.log(accessToken);
       }
     }
   }, [displayData, error, result]);

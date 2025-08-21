@@ -19,7 +19,10 @@ function App({ msalInstance }: { msalInstance: PublicClientApplication }) {
   return (
     <MsalProvider instance={msalInstance}>
       <Header setActiveTab={setActiveTab} />
-      {activeTab === "home" ? <Home /> : <Profile />}
+      <main>
+        <h1>Welcome to the MSAL Demo for React!</h1>
+        {activeTab === "home" ? <Home /> : <Profile />}
+      </main>
     </MsalProvider>
   );
 }

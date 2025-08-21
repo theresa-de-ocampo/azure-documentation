@@ -13,7 +13,7 @@ export default function Header({
   const isAuthenticated = useIsAuthenticated();
 
   function navigate(e: MouseEvent<HTMLAnchorElement>, page: PAGE) {
-    e.preventDefault();
+    // e.preventDefault();
     setActiveTab(page);
   }
 

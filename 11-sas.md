@@ -212,15 +212,15 @@ Notice that it uses `sr` and not `srt`. If you try to to use this SAS URL to att
 
 #### Container-Level SAS using Stored Access Policy
 
-![Stored Access Policy Menu Item](assets/11-sas/05-stored-access-policy.png)
+![Stored Access Policy Menu Item](assets/11-sas/04-stored-access-policy.png)
 
-![Create Storage Access Policy](assets/11-sas/06-create-storage-access-policy.png)
+![Create Storage Access Policy](assets/11-sas/05-create-storage-access-policy.png)
 
 Make sure to hit _Save_.
 
 Now, when you try to create a SAS using the Stored Access Policy, it will inherit the configuration.
 
-![SAS associated with a Stored Access Policy](assets/11-sas/07-sas-using-stored-access-policy.png)
+![SAS associated with a Stored Access Policy](assets/11-sas/06-sas-using-stored-access-policy.png)
 
 ```http
 https://gourmade0storage.blob.core.windows.net/south?si=Read-Only&spr=https&sv=2024-11-04&sr=c&sig=4B7dzrcqZWy7Naw9gz%2BpICjvKR8d3GUY3FDyy6D6r6c%3D
@@ -230,11 +230,11 @@ https://gourmade0storage.blob.core.windows.net/south?si=Read-Only&spr=https&sv=2
 
 However, you can't extract the permissions from a SAS created with Stored Access Policy.
 
-![Unknown Permissions](assets/11-sas/08-unknown-permissions.png)
+![Unknown Permissions](assets/11-sas/07-unknown-permissions.png)
 
 Trying to upload a file will cause the following prompts.
 
-![Specify which features should Storage Explorer attempt to perform.](assets/11-sas/09-explorer-unable-to-detect-permissions.png)
+![Specify which features should Storage Explorer attempt to perform.](assets/11-sas/08-explorer-unable-to-detect-permissions.png)
 
 You'll get a cryptic error `Transfer of 'C:\Users\Therese\Documents\Web Development\Microsoft Azure\Sample Shipment File\teriz-de-ocampo.pdf' to 'south/laguna/los-banos/' canceled: 0 items transferred, error: UnexpectedCancel (used SAS, discovery completed)` instead of the clearer message you would get without the use of Access Policy (_"Failed to start transfer: Insufficient credentials"_).
 
@@ -252,11 +252,11 @@ Note that even if you assigned a _Storage Blob Data Reader_ role to a user, they
 
 A user delegation SAS is more secure since it does not rely on the permissions included in the SAS token only. It also takes into consideration the RBAC permissions of the user who created this SAS token.
 
-![You don't have permission to grant add consent, write access. You can still create a shared access signature, but you'll need an RBAC role with additional permissions before you can grant that level of access to your signature recipient.](assets/11-sas/10-user-delagation-key-permission-error.png)
+![You don't have permission to grant add consent, write access. You can still create a shared access signature, but you'll need an RBAC role with additional permissions before you can grant that level of access to your signature recipient.](assets/11-sas/09-user-delagation-key-permission-error.png)
 
 The generated User Delegation Key is only available for 7 days. This means that the SAS could only live for 7 days as well.
 
-![Expiry data and time should be within 7 days of the current time.](assets/11-sas/11-user-delegation-key-timeline-error.png)
+![Expiry data and time should be within 7 days of the current time.](assets/11-sas/10-user-delegation-key-timeline-error.png)
 
 ```http
 https://gourmade0storage.blob.core.windows.net/south?sp=r&st=2025-08-23T09:54:22Z&se=2025-08-23T13:09:22Z&skoid=6664658a-f6ec-4e72-xxxxxxxxxxxx&sktid=2d0a6b7f-d345-4b28-9f6b-xxxxxxxxxxxx&skt=2025-08-23T09:54:22Z&ske=2025-08-23T13:09:22Z&sks=b&skv=2024-11-04&spr=https&sv=2024-11-04&sr=c&sig=837nVGcEMqout3pNuKZd7XQoO3tZXyrrve4rpk6gmLs%3D
@@ -400,7 +400,7 @@ If you want to invalidate the SAS, either:
 
 ### Blob-Level SAS
 
-![Creating a Blob-Level SAS](assets/11-sas/04-blob-level-sas.png)
+![Creating a Blob-Level SAS](assets/11-sas/11-blob-level-sas.png)
 
 ```http
 https://gourmade0storage.blob.core.windows.net/south/cavite/naic/teriz-de-ocampo.pdf?sp=r&st=2025-08-23T06:49:57Z&se=2025-08-23T15:04:57Z&spr=https&sv=2024-11-04&sr=b&sig=zm22egxASPfgD1YqBwVmckcPMB7O0dof8r%2FiV1ZRZC4%3D
@@ -499,8 +499,8 @@ https://gourmade0storage.blob.core.windows.net/south/cavite/naic/teriz-de-ocampo
 
 Using this SAS URI did not work for any of the supported resources by Microsoft Azure Storage Explorer. But using the URI on a browser worked.
 
-![Storage Explorer Connection Options](assets/11-sas/10-storage-explorer-connection-options.png)
+![Storage Explorer Connection Options](assets/11-sas/12-storage-explorer-connection-options.png)
 
 Note that you can also generate a Blob-Level SAS with Access Policy. Unlike with container, the _"Access Policy"_ menu item won't show up from the context menu, because the policy has to be created on the container-level. Whatever policies you've already created for the container of the blob, it will show up as an option when creating a SAS.
 
-![Blob SAS using Stored Access Policy](assets/11-sas/11-blob-sas-using-stored-access-policy.png)
+![Blob SAS using Stored Access Policy](assets/11-sas/13-blob-sas-using-stored-access-policy.png)

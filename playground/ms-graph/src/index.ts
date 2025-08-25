@@ -1,11 +1,9 @@
 import "dotenv/config";
 import readline from "readline-sync";
 
-import settings from "./app-settings.js";
 import {
   displayAccessToken,
   greetUser,
-  initializeGraph,
   listInbox,
   makeGraphCall,
   sendMail
@@ -15,7 +13,6 @@ async function main() {
   console.log("Microsoft Graph Demo");
 
   let choice = 0;
-  initializeGraph(settings);
 
   await greetUser();
 

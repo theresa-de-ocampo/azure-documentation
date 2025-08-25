@@ -184,3 +184,14 @@ Container app created. Access your app at https://gourmade-quiz.happypebble-d944
 
 "gourmade-quiz.happypebble-d9440b1a.southeastasia.azurecontainerapps.io"
 ```
+
+```bash
+az storage container policy create \
+  --account-name <storage account name \
+  --acount-key <storage account key> \
+  --container-name <container name> \
+  --name <stored access policy identifier> \
+  --start <start time UTC datetime> \
+  --expiry <expiry time UTC datetime> \
+  --permissions <(a)dd, (c)reate, (d)elete, (l)ist, (r)ead (w)rite>
+```

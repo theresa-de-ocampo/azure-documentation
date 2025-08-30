@@ -5,7 +5,6 @@ import {
   displayAccessToken,
   greetUser,
   listInbox,
-  makeGraphCall,
   sendMail
 } from "./actions.js";
 
@@ -38,10 +37,12 @@ async function main() {
         await listInbox();
         break;
       case 2:
-        await sendMail();
-        break;
-      case 3:
-        await makeGraphCall();
+        const subject = readline.question("Subject: ");
+        const recipient = readline.questionEMail("Email: ");
+        const message = readline.question("Message: ", {
+          min: 1
+        });
+        await sendMail(subject, recipient, message);
         break;
       default:
         console.log("Invalid choice! Please try again.");

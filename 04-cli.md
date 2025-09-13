@@ -195,3 +195,76 @@ az storage container policy create \
   --expiry <expiry time UTC datetime> \
   --permissions <(a)dd, (c)reate, (d)elete, (l)ist, (r)ead (w)rite>
 ```
+
+## Azure Key vault
+
+```bash
+az keyvault create \
+  --resource-group gourmade-rg \
+  --location southeastasia \
+  --name gourmade-kv
+```
+
+Azure AD group-based role assignment propagation took more than an hour. Direct user assignment was instant.
+
+```bash
+az keyvault secret set \
+  --vault-name gourmade-kv \
+  --name "MySecret" \
+  --value "My Secret Value
+```
+
+Both `ContentType` and `Content-Type` works.
+
+```bash
+az rest \
+  --method GET \
+  --url https://graph.microsoft.com/v1.0/me \
+  --header 'ContentType=application/json' \
+  --query userPrincipalName \
+  --output tsv
+```
+
+```bash
+az keyvault show \
+  --resource-group gourmade-rg \
+  --name gourmade-kv \
+  --query id \
+  --output tsv
+```
+
+```bash
+az role assignment create \
+  --assignee $userPrincipal \
+  --role "Key Vault Secrets Officer" \
+  --scope $resourceId
+```
+
+## Azure App Configuration
+
+```bash
+az appconfig identity assign \
+  --name gourmade-app-config \
+  --resource-group gourmade-rg
+```
+
+```bash
+az identity create \
+  --resource-group gourmade-rg \
+  --name gourmade-app-config-id
+```
+
+```bash
+az appconfig identity assign \
+  --resource-group gourmade-rg \
+  --name gourmade-app-config \
+  --identities /subscriptions/[subscription id]/resourcegroups/gourmade-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/gourmade-app-config-id
+```
+
+```bash
+az appconfig kv set \
+  --name gourmade-app-config \
+  --key Dev:ConnStr \
+  --value connectionString \
+  --yes
+```

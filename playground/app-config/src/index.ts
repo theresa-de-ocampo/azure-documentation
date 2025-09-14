@@ -5,7 +5,8 @@ import {
   createSetting,
   getSetting,
   updateSetting,
-  deleteSetting
+  deleteSetting,
+  getFeatureState
 } from "./actions.js";
 
 async function main() {
@@ -39,6 +40,9 @@ async function main() {
         break;
       case 3:
         await deleteSetting();
+        break;
+      case 4:
+        await getFeatureState();
         break;
       default:
         console.log("Invalid choice! Please try again.");

@@ -1,4 +1,5 @@
-import { authenticate } from "./client.js";
+import { authenticate as authenticateConfig } from "./client/config.js";
+import { authenticate as authenticateFeature } from "./client/feature.js";
 import readline from "readline-sync";
 
 export async function createSetting() {
@@ -6,7 +7,7 @@ export async function createSetting() {
   const value = readline.question("Value: ");
   const label = readline.question("Label (Optional): ") || undefined;
 
-  const client = authenticate();
+  const client = authenticateConfig();
 
   try {
     const setting = await client.setConfigurationSetting({
@@ -25,7 +26,7 @@ export async function getSetting() {
   const key = readline.question("Key: ");
   const label = readline.question("Label (Optional): ") || undefined;
 
-  const client = authenticate();
+  const client = authenticateConfig();
   let setting;
 
   try {
@@ -40,7 +41,7 @@ export async function getSetting() {
 }
 
 export async function updateSetting() {
-  const client = authenticate();
+  const client = authenticateConfig();
   const setting = await getSetting();
 
   try {
@@ -61,7 +62,7 @@ export async function deleteSetting() {
   const key = readline.question("Key: ");
   const label = readline.question("Label (Optional): ") || undefined;
 
-  const client = authenticate();
+  const client = authenticateConfig();
 
   try {
     // If a setting has a label, but you only provided the key, it's not going to delete it (204)
@@ -74,5 +75,13 @@ export async function deleteSetting() {
 }
 
 export async function getFeatureState() {
-  const client = authenticate();
+  const client = await authenticateFeature();
+
+  try {
+    const featureName = readline.question("Feature: ");
+    const result = await client.isEnabled(featureName);
+    console.dir(result, { depth: null });
+  } catch (error) {
+    console.error(error);
+  }
 }

@@ -33,7 +33,7 @@ To request tokens for Azure Storage, specify the value `https://storage.azure.co
 
 1. We'll be accessing the blob using Postman. Hence, we'll have to get Postman authenticated by Azure. Proceed with creating an app registration.
 2. Go to **Storage Account** > **Access Control (IAM)**, add a role assignment (e.g., _Storage Blob Data Contributor_) to the app that you just registered.
-3. Go to **App Registration** > **Overview** > **Endpoints** > Copy **OAuth 2.0 token ednpoint (v2)**.
+3. Go to **App Registration** > **Overview** > **Endpoints** > Copy **OAuth 2.0 token endpoint (v2)**.
 4. Get the token using Postman.
 
    1. Set **Auth Type** to _Inherit auth from parent_.

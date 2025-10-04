@@ -268,3 +268,14 @@ az appconfig kv set \
   --value connectionString \
   --yes
 ```
+
+## Azure Event Grid
+
+```bash
+az eventgrid event-subscription create \
+  -g gridResourceGroup \
+  --name  <event-subscription-name> \
+  --topic-name <topic-name> \
+  --endpoint <URL> \
+  --max-delivery-attemps 18
+```

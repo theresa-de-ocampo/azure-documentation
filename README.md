@@ -16,3 +16,4 @@
 1. [MSAL React](./playground/msal-react/README.md)
 2. [MS Graph](./playground//ms-graph/README.md)
 3. [Azure App Configuration](./playground/app-config/README.md)
+4. [Azure Event Grid](./playground/event-grid/README.md)

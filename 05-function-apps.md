@@ -40,7 +40,7 @@ Try to create another Function App using the Flex Consumption plan. For the stor
 
 ![Your storage account has no network access restrictions. If you'd like to configure network security, either opt for a new storage account or select an existing storage account with network security.](assets/05-function-apps/03-network-access-restrictions.png)
 
-When you select a storage account for a Flex Consumption Plan, Azure recommends one with network security enabled. This is because Flex is designed for more secure cases, often involcing VNET integration. The message is just a guidance prompt saying "We recommend you use a storage account that can be locked down for security." If you use an existing storage used by other resources, it might limit you from performing isolation in the future.
+When you select a storage account for a Flex Consumption Plan, Azure recommends one with network security enabled. This is because Flex is designed for more secure cases, often involving VNET integration. The message is just a guidance prompt saying "We recommend you use a storage account that can be locked down for security." If you use an existing storage used by other resources, it might limit you from performing isolation in the future.
 
 ### Resource Authentication
 
@@ -88,7 +88,7 @@ The authorization level is a string value that indicates the kind of authorizati
 
 ![App Service Plan Name](assets/05-function-apps/08-app-service-plan-name.png)
 
-Unfortunately, you cannot change the Azure Function App Service plan after creation. But, you can create new Azure Function with your choice of name using ARM template. At the Review + Create tab, download the template and change the name before deployment.
+Unfortunately, you cannot change the Azure Function App Service plan after creation. But, you can create new Azure Function with your choice of name using ARM template. At the _Review + Create_ tab, download the template and change the name before deployment.
 
 ## Deployment
 
@@ -106,3 +106,8 @@ Aside from the portal, you can also run functions in production using VS Code in
 Invocations from VS Code tend to have more delays.
 
 ![VS Code Invocations](assets/05-function-apps/10-vs-code-invocations.png)
+
+https://github.com/Azure/Azure-Functions/issues/1240
+https://learn.microsoft.com/en-us/azure/azure-functions/functions-best-practices?tabs=csharp
+
+As part of your solution, you likely develop and publish multiple functions. These functions are often combined into a single function app, but they can also run in separate function apps.

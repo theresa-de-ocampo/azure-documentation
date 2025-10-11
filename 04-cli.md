@@ -272,10 +272,45 @@ az appconfig kv set \
 ## Azure Event Grid
 
 ```bash
+az eventgrid topic create \
+  --name <topic-name> \
+  --resource-group <group-name> \
+  --location <location>
+```
+
+The following script uses a pre-built web app that displays the event messages. The deployed solution includes an App Service plan, an App Service web app, and source code from GitHub.
+
+```bash
+az deployment group create \
+  --resource-group <group-name> \
+  --template-uri "https://raw.githubusercontent.com/Azure-Samples/azure-event-grid-viewer/main/azuredeploy.json" \
+  --parameters siteName=event-grid-site siteUrl=https://event-grid-site.azurewebsites.net
+```
+
+```bash
+endpoint="${siteURL}/api/updates"
+topicId=$(az eventgrid topic show --resource-group $resourceGroup \
+  --name $topicName --query "id" --output tsv)
+
+az eventgrid event-subscription create \
+  --source-resource-id $topicId \
+  --name TopicSubscription \
+  --endpoint $endpoint
+```
+
+```bash
 az eventgrid event-subscription create \
   -g gridResourceGroup \
   --name  <event-subscription-name> \
   --topic-name <topic-name> \
   --endpoint <URL> \
   --max-delivery-attemps 18
+```
+
+```bash
+az eventgrid topic key list \
+  -g $resourceGroup \
+  --name $topicName \
+  --query "key1" \
+  --output tsv
 ```

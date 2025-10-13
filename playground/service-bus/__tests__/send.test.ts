@@ -20,6 +20,6 @@ describe("Queue > Sender", () => {
       }
     ];
 
-    await sendMesssages("payments_webhook", payments);
+    await sendMesssages("payment_webhook", payments);
   });
 });

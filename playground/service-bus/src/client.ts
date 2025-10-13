@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { ServiceBusClient } from "@azure/service-bus";
 import { DefaultAzureCredential } from "@azure/identity";
 

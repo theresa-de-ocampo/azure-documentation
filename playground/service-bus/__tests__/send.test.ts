@@ -1,4 +1,4 @@
-import sendMesssages from "../src/entities/queues/sender.js";
+import { queues } from "../src/index.js";
 
 describe("Queue > Sender", () => {
   it("should send messages", async () => {
@@ -20,6 +20,6 @@ describe("Queue > Sender", () => {
       }
     ];
 
-    await sendMesssages("payment_webhook", payments);
+    await queues.sendMesssages("payment_webhook", payments);
   });
 });

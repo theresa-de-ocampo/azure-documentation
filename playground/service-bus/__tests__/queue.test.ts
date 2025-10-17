@@ -1,4 +1,4 @@
-import { QUEUE } from "../src/constants.js";
+import { QUEUE, SETTLEMENT } from "../src/constants.js";
 import { queues } from "../src/index.js";
 
 describe("Queues", () => {
@@ -43,5 +43,46 @@ describe("Queues", () => {
       expect(message.messageId).toBeDefined();
       expect(message.body).toBeDefined();
     }
+  });
+
+  it("should complete the message", async () => {
+    await queues.receiveMessages.receiveAndAck(
+      QUEUE.PAMENT_WEBHOOK,
+      SETTLEMENT.COMPLETE
+    );
+  });
+
+  it("should abandon the message", async () => {
+    await queues.receiveMessages.receiveAndAck(
+      QUEUE.PAMENT_WEBHOOK,
+      SETTLEMENT.ABANDON
+    );
+  });
+
+  it("should defer the message", async () => {
+    await queues.receiveMessages.receiveAndAck(
+      QUEUE.PAMENT_WEBHOOK,
+      SETTLEMENT.DEFER
+    );
+  });
+
+  it("should receive deferred message", async () => {
+    const sequenceNumber = 18;
+
+    const message = await queues.receiveMessages.receiveDeferredMessage(
+      QUEUE.PAMENT_WEBHOOK,
+      sequenceNumber
+    );
+
+    expect(message.messageId).toBeDefined();
+    expect(message.sequenceNumber?.toNumber()).toEqual(sequenceNumber);
+    expect(message.body).toBeDefined();
+  });
+
+  it("should dead letter the message", async () => {
+    await queues.receiveMessages.receiveAndAck(
+      QUEUE.PAMENT_WEBHOOK,
+      SETTLEMENT.DEAD_LETTER
+    );
   });
 });

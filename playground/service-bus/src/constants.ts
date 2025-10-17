@@ -6,4 +6,11 @@ const enum TOPIC {
   ORDER = "order"
 }
 
-export { QUEUE, TOPIC };
+const enum SETTLEMENT {
+  ABANDON,
+  COMPLETE,
+  DEAD_LETTER,
+  DEFER
+}
+
+export { QUEUE, TOPIC, SETTLEMENT };

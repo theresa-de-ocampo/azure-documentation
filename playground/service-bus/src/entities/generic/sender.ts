@@ -3,7 +3,7 @@ import { QUEUE, TOPIC } from "../../constants.js";
 
 async function sendMesssages(
   queueOrTopicName: QUEUE | TOPIC,
-  messages: { body: unknown }[]
+  messages: { subject?: string; body: unknown }[]
 ) {
   const client = await authenticate();
   const sender = client.createSender(queueOrTopicName);

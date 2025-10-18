@@ -4,7 +4,7 @@ enum QUEUE {
 }
 
 enum TOPIC {
-  ORDER = "order"
+  CUSTOMER_CREATED = "customer_created"
 }
 
 enum SETTLEMENT {

@@ -71,7 +71,7 @@ async function main() {
     await sendMessage(sessions[0].order_id, interest[1]);
     await sendMessage(sessions[1].order_id, noise[1]);
     await sendMessage(sessions[0].order_id, interest[2]);
-    await sendMessage(sessions[1].order_id, noise[1]);
+    await sendMessage(sessions[1].order_id, noise[2]);
 
     await receiveMessages(sessions[0].order_id);
   } catch (error) {
@@ -102,25 +102,33 @@ async function receiveMessages(sessionId: string) {
   const client = await authenticate();
   const receiver = await client.acceptSession(QUEUE.ORDER_PROCESS, sessionId);
 
+  async function processMessage(message: ServiceBusMessage) {
+    console.log(
+      `Received: ${message.sessionId} - ${JSON.stringify(message.body)}`
+    );
+
+    await receiver.setSessionState({ last_event: message.subject });
+  }
+
+  async function processError(args: ProcessErrorArgs) {
+    console.log(
+      `Error occurred with ${args.entityPath} within ${args.fullyQualifiedNamespace}: ${args.error}`
+    );
+  }
+
   receiver.subscribe({
     processMessage,
     processError
   });
 
   await sleep(10_000);
+  let sessionState = await receiver.getSessionState();
+  console.log(`Session State: ${JSON.stringify(sessionState)}`);
+
+  await receiver.setSessionState(null);
+  sessionState = await receiver.getSessionState();
+  console.log(`Cleared Session State: ${JSON.stringify(sessionState)}`);
   await receiver.close();
-}
-
-async function processMessage(message: ServiceBusMessage) {
-  console.log(
-    `Received: ${message.sessionId} - ${JSON.stringify(message.body)}`
-  );
-}
-
-async function processError(args: ProcessErrorArgs) {
-  console.log(
-    `Error occurred with ${args.entityPath} within ${args.fullyQualifiedNamespace}: ${args.error}`
-  );
 }
 
 function sleep(ms: number) {

@@ -19,11 +19,6 @@ export async function authenticate() {
   return client;
 }
 
-export async function createSender(queueOrTopicName: string) {
-  const client = await authenticate();
-  return client.createSender(queueOrTopicName);
-}
-
 export async function close() {
   if (client) {
     client.close();

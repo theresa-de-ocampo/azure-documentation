@@ -1,20 +1,20 @@
-const enum QUEUE {
+enum QUEUE {
   PAMENT_WEBHOOK = "payment_webhook",
   ORDER_PROCESS = "order_process"
 }
 
-const enum TOPIC {
+enum TOPIC {
   ORDER = "order"
 }
 
-const enum SETTLEMENT {
+enum SETTLEMENT {
   ABANDON,
   COMPLETE,
   DEAD_LETTER,
   DEFER
 }
 
-const enum EVENT {
+enum EVENT {
   PLACED_ORDER = "placed_order",
   PAYMENT_PAID = "payment_paid",
   FULFILLED_ORDER = "fulfilled_order"

@@ -1,5 +1,5 @@
 import { QUEUE, SETTLEMENT } from "../src/constants.js";
-import { queues } from "../src/index.js";
+import serviceBus from "../src/index.js";
 
 describe("Queues", () => {
   it("should send messages", async () => {
@@ -21,11 +21,11 @@ describe("Queues", () => {
       }
     ];
 
-    await queues.sendMesssages(QUEUE.PAMENT_WEBHOOK, payments);
+    await serviceBus.sendMesssages(QUEUE.PAMENT_WEBHOOK, payments);
   });
 
   it("should receive, and delete messages", async () => {
-    const messages = await queues.receiveMessages.receiveAndDelete(
+    const messages = await serviceBus.queues.receiveMessages.receiveAndDelete(
       QUEUE.PAMENT_WEBHOOK,
       2
     );
@@ -37,7 +37,10 @@ describe("Queues", () => {
   });
 
   it("should only peek messages", async () => {
-    const messages = await queues.receiveMessages.peek(QUEUE.PAMENT_WEBHOOK, 2);
+    const messages = await serviceBus.queues.receiveMessages.peek(
+      QUEUE.PAMENT_WEBHOOK,
+      2
+    );
 
     for (const message of messages) {
       expect(message.messageId).toBeDefined();
@@ -46,21 +49,21 @@ describe("Queues", () => {
   });
 
   it("should complete the message", async () => {
-    await queues.receiveMessages.receiveAndAck(
+    await serviceBus.queues.receiveMessages.receiveAndAck(
       QUEUE.PAMENT_WEBHOOK,
       SETTLEMENT.COMPLETE
     );
   });
 
   it("should abandon the message", async () => {
-    await queues.receiveMessages.receiveAndAck(
+    await serviceBus.queues.receiveMessages.receiveAndAck(
       QUEUE.PAMENT_WEBHOOK,
       SETTLEMENT.ABANDON
     );
   });
 
   it("should defer the message", async () => {
-    await queues.receiveMessages.receiveAndAck(
+    await serviceBus.queues.receiveMessages.receiveAndAck(
       QUEUE.PAMENT_WEBHOOK,
       SETTLEMENT.DEFER
     );
@@ -69,10 +72,11 @@ describe("Queues", () => {
   it("should receive deferred message", async () => {
     const sequenceNumber = 18;
 
-    const message = await queues.receiveMessages.receiveDeferredMessage(
-      QUEUE.PAMENT_WEBHOOK,
-      sequenceNumber
-    );
+    const message =
+      await serviceBus.queues.receiveMessages.receiveDeferredMessage(
+        QUEUE.PAMENT_WEBHOOK,
+        sequenceNumber
+      );
 
     expect(message.messageId).toBeDefined();
     expect(message.sequenceNumber?.toNumber()).toEqual(sequenceNumber);
@@ -80,7 +84,7 @@ describe("Queues", () => {
   });
 
   it("should dead letter the message", async () => {
-    await queues.receiveMessages.receiveAndAck(
+    await serviceBus.queues.receiveMessages.receiveAndAck(
       QUEUE.PAMENT_WEBHOOK,
       SETTLEMENT.DEAD_LETTER
     );

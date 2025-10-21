@@ -1,4 +1,5 @@
 import "dotenv/config";
+
 import { isServiceBusError } from "@azure/service-bus";
 import type {
   ServiceBusClient,
@@ -23,7 +24,7 @@ function sleep(ms: number) {
 
 async function processMessage(message: ServiceBusMessage) {
   console.log(
-    `Received: ${message.sessionId} - ${JSON.stringify(message.body)}`
+    `Received ${message.subject} message from session ${message.sessionId}`
   );
 }
 
@@ -44,16 +45,18 @@ async function createReceiver(client: ServiceBusClient, workerId: number) {
     if (
       isServiceBusError(error) &&
       (error.code === "SessionCannotBeLocked" ||
-        error.cause === "ServiceTimeout")
+        error.code === "ServiceTimeout")
     ) {
-      console.log(
+      console.error(
         `[Worker ${workerId}] No available sessions, sleeping for ${config.delayTime}`
       );
     } else {
-      console.log(
+      console.error(
         `[Worker ${workerId}] Error when creating the receiver for the next available session.`
       );
     }
+
+    await sleep(config.delayTime);
   }
 
   return receiver;

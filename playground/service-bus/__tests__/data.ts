@@ -13,19 +13,13 @@ const session1 = generateSession();
 const session2 = generateSession();
 const session3 = generateSession();
 
-const sessionIDs = {
-  session1: session1.orderId,
-  session2: session2.orderId,
-  session3: session3.orderId
-};
-
 const initialEvents = [
   {
     subject: EVENT.PLACED_ORDER,
     body: {
       orderId: session1.orderId
     },
-    sessionId: session1.orderId
+    sessionId: "A"
   },
   {
     subject: EVENT.PAYMENT_PAID,
@@ -33,7 +27,7 @@ const initialEvents = [
       orderId: session1.orderId,
       paymentId: session1.paymentId
     },
-    sessionId: session1.orderId
+    sessionId: "A"
   },
   {
     subject: EVENT.FULFILLED_ORDER,
@@ -41,14 +35,14 @@ const initialEvents = [
       orderId: session1.orderId,
       shipmentId: session1.shipmentId
     },
-    sessionId: session1.orderId
+    sessionId: "A"
   },
   {
     subject: EVENT.PLACED_ORDER,
     body: {
       orderId: session2.orderId
     },
-    sessionId: session2.orderId
+    sessionId: "B"
   },
   {
     subject: EVENT.PAYMENT_PAID,
@@ -56,14 +50,14 @@ const initialEvents = [
       orderId: session2.orderId,
       paymentId: session2.paymentId
     },
-    sessionId: session2.orderId
+    sessionId: "B"
   },
   {
     subject: EVENT.PLACED_ORDER,
     body: {
       orderId: session3.orderId
     },
-    sessionId: session3.orderId
+    sessionId: "C"
   },
   {
     subject: EVENT.PAYMENT_PAID,
@@ -71,7 +65,7 @@ const initialEvents = [
       orderId: session3.orderId,
       paymentId: session3.paymentId
     },
-    sessionId: session3.orderId
+    sessionId: "C"
   },
   {
     subject: EVENT.FULFILLED_ORDER,
@@ -79,7 +73,7 @@ const initialEvents = [
       orderId: session3.orderId,
       shipmentId: session3.shipmentId
     },
-    sessionId: session3.orderId
+    sessionId: "C"
   }
 ];
 
@@ -93,4 +87,4 @@ const followUpEvent = [
   }
 ];
 
-export { sessionIDs, initialEvents, followUpEvent };
+export { initialEvents, followUpEvent };

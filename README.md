@@ -10,6 +10,9 @@
 8. [Implicit vs. Authorization Code](./08-implicit-vs-auth-code.md)
 9. [Authorize Requests to Azure Storage Account](./09-storage-account-auth.md)
 10. [Azure Storage REST API](./10-storage-account-rest-api.md)
+11. [Shared Access Signatures](./11-sas.md)
+12. [Microsoft Graph](./12-ms-graph.md)
+13. [More Reads](./13-exam.md)
 
 ## Mini Apps
 

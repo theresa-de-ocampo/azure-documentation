@@ -8,9 +8,9 @@ You can test the following sections using Microsoft Azure Storage Explorer.
 
 ## Account-Level SAS
 
-Even if you select just one service, you're still configuring an account-level SAS. In this scenario, you'll have access to _all_ of the containers.
+Even if you select just one service or one resource type, you're still configuring an account-level SAS. In this scenario, you'll have access to _all_ of the containers.
 
-Even if you select just one resource type, you're still configuring an account-level SAS. For the _Container_ option, don't think of it as a `blob container`. Think of it as something that will have child elements.
+For the _Container_ option, don't think of it as a `blob container`. Think of it as something that will have child elements.
 
 In the context of blobs, `container` will refer to `blob` container which will contain `blobs`.
 
@@ -347,7 +347,7 @@ https://gourmade0storage.blob.core.windows.net/south?sp=r&st=2025-08-23T09:54:22
         Signed Key Services
       </td>
       <td>
-        <code>&sks=b</code> - indicates the key for which the user delegation key is valid.
+        <code>&sks=b</code> - indicates the service for which the user delegation key is valid.
       </td>
     </tr>
     <tr>

@@ -67,7 +67,7 @@ To request tokens for Azure Storage, specify the value `https://storage.azure.co
     2. Set **Grant Type** to _Authorization Code (With PKCE)_.
     3. Check **Authorize using browser**.
     4. Fill in **Auth URL** by going to Azure Portal **Overview** > **Endpoints** > Copy **OAuth 2.0 Authorization Endpoint (v2)**.
-    5. Fill in Access Token URL by going to Azure Portal **Overview** > **Endpoints** > Copy **OAuth 2.0 Token Endpoint (v2)**.
+    5. Fill in **Access Token URL** by going to Azure Portal **Overview** > **Endpoints** > Copy **OAuth 2.0 Token Endpoint (v2)**.
     6. Enter the client ID.
     7. Select SHA-256 for **Code Challenge Method**. This is the algorithm that will be used to hash the code challenge.
     8. Enter a minimum of 43 characters for the **Code Verifier**, this is the code challenge.
@@ -75,7 +75,7 @@ To request tokens for Azure Storage, specify the value `https://storage.azure.co
     10. Hit **Get New Access Token**. A consent window will pop-up if this is your first time logging in. You will then directly recieve the access token.
 
     > [!WARNING]
-    > It successfully generates the error. However, there's a console error showing up in Postman even though the client ID has already been included.
+    > It successfully generates the token. However, there's a console error showing up in Postman even though the client ID has already been included.
     > I've also already tried setting **Client Authentication** to **Send client credentials in body** and adding an origin header, but then, it will throw _"Tokens issued for the 'Single-Page Application' client-type may only be redeemed via cross-origin requests."_
     > Just ignore this error and proceed with the next step.
     > If you happen to know why this is happening, please don't hesitate to drop me a message — would really appreciate the help! 🙏💬

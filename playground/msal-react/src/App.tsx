@@ -14,14 +14,14 @@ import Profile from "./components/Profile";
 import PAGE from "./constants/pages";
 
 function App({ msalInstance }: { msalInstance: PublicClientApplication }) {
-  const [activeTab, setActiveTab] = useState(PAGE.HOME);
+  const [activeTab, setActiveTab] = useState<PAGE>(PAGE.HOME);
 
   return (
     <MsalProvider instance={msalInstance}>
       <Header setActiveTab={setActiveTab} />
       <main>
         <h1>Welcome to the MSAL Demo for React!</h1>
-        {activeTab === "home" ? <Home /> : <Profile />}
+        {activeTab === PAGE.HOME ? <Home /> : <Profile />}
       </main>
     </MsalProvider>
   );

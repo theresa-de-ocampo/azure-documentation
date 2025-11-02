@@ -101,6 +101,26 @@ az acr run \
   --cmd '$Registry/api/gourmade:v1' /dev/null
 ```
 
+```bash
+az acr repository delete \
+  --name devregistry \
+  --image dev/nginx:latest
+```
+
+The `suffix` parameter should only be used if you are accessing the registry from a different subscription or have permissions to access images but not permission to manage the registry resource.
+
+```bash
+az acr repository delete \
+  --name devregistry \
+  --suffix dev/nginx:latest
+```
+
+```bash
+az acr manifest delete \
+  --registry devregistry \
+  --name dev/nginx:latest
+```
+
 ## Container Instances
 
 ```bash
@@ -142,6 +162,25 @@ az container show \
 FQDN                                          ProvisioningState
 --------------------------------------------  -------------------
 gourmade-aci.southeastasia.azurecontainer.io  Succeeded
+```
+
+To change the restart policy of a container, you must first delete the container group, then create it again. Certain properties like `dns-name-label` can be updated using the `create` command without having to delete it first. [Learn more](https://learn.microsoft.com/en-us/azure/container-instances/container-instances-update).
+
+```bash
+az container create \
+  --resource-group gourmade-rg \
+  --name gourmade-aci \
+  --image mcr.microsoft.com/azuredocs/aci-helloworld \
+  --restart-policy OnFailure
+```
+
+The following command is used to restart all the containers in a container group.
+
+```bash
+az container restart \
+  --resource-group gourmade-rg \
+  --name gourmade-aci \
+  --no-wait
 ```
 
 ## Container Apps
@@ -210,27 +249,31 @@ Azure AD group-based role assignment propagation took more than an hour. Direct 
 ```bash
 az keyvault secret set \
   --vault-name gourmade-kv \
-  --name "MySecret" \
-  --value "My Secret Value
+  --name MySecret \
+  --value "My Secret Value"
 ```
 
 Both `ContentType` and `Content-Type` works.
 
 ```bash
-az rest \
-  --method GET \
-  --url https://graph.microsoft.com/v1.0/me \
-  --header 'ContentType=application/json' \
-  --query userPrincipalName \
-  --output tsv
+userPrincipal=$(
+  az rest \
+    --method GET \
+    --url https://graph.microsoft.com/v1.0/me \
+    --header 'ContentType=application/json' \
+    --query userPrincipalName \
+    --output tsv
+)
 ```
 
 ```bash
-az keyvault show \
-  --resource-group gourmade-rg \
-  --name gourmade-kv \
-  --query id \
-  --output tsv
+resourceId=$(
+  az keyvault show \
+    --resource-group gourmade-rg \
+    --name gourmade-kv \
+    --query id \
+    --output tsv
+)
 ```
 
 ```bash
@@ -238,6 +281,12 @@ az role assignment create \
   --assignee $userPrincipal \
   --role "Key Vault Secrets Officer" \
   --scope $resourceId
+```
+
+```bash
+az keyvault secret show \
+  --vault-name gourmade-kv \
+  --name MollieApiKey
 ```
 
 ## Azure App Configuration

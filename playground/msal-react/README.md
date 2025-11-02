@@ -8,6 +8,23 @@
 
 - Upon login, it will return an object `{ authority, scopes, account, idToken, idTokenClaims, accessToken }`.
 
+## Functions Used
+
+- `loginPopup`
+- `logoutPopup`
+- `getActiveAccount`
+- `acquireTokenSilent`
+
+## Hooks Used
+
+- `useMsal`
+- `useIsAuthenticated`
+
+## Components Used
+
+- `AuthenticatedTemplate`
+- `UnauthenticatedTemplate`
+
 ## Access Token vs. ID Token
 
 ### Access Token
@@ -19,7 +36,7 @@
 
 - Audience (`aud`) = just your client app
 - ID token is interpreted by the client.
-- Useful if you just want to know who the use is (e.g., display the name).
+- Useful if you just want to know who the user is (e.g., display the name).
 - `idToken` can't be decoded by [jwt.io](https://www.jwt.io/). Use [jwt.ms](https://jwt.ms/) instead.
 
 ## How to Run

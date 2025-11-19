@@ -235,6 +235,14 @@ az storage container policy create \
   --permissions <(a)dd, (c)reate, (d)elete, (l)ist, (r)ead (w)rite>
 ```
 
+Builds and deploys the container app using the Dockerfile in the root of the repository.
+
+```bash
+az containerapp up \
+  --name gourmade-quiz \
+  --source .
+```
+
 ## Azure Key vault
 
 ```bash
@@ -287,6 +295,30 @@ az role assignment create \
 az keyvault secret show \
   --vault-name gourmade-kv \
   --name MollieApiKey
+```
+
+```bash
+az keyvault key rotate \
+  --vault-name gourmade-kv \
+  --name SigningKey
+```
+
+```bash
+az keyvault key purge \
+  --vault-name gourmade-kv \
+  --name SigningKey
+```
+
+```bash
+az keyvault key set-attributes \
+  --vault-name gourmad-kv \
+  --name SigningKey \
+  [--enabled {false, true}]
+  [--expires]
+  [--immutable {false, true}]
+  [--policy]
+  [--tags]
+  [--version]
 ```
 
 ## Azure App Configuration

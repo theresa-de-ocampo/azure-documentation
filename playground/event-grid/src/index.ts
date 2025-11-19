@@ -24,8 +24,12 @@ async function updateInventory(_productId: string, _count: Number) {
 
   if (updatedProduct.stock === 0) {
     const client = authenticateToEventGrid();
+
+    // All properties are can be user-defined except for metadata version.
     await client.send([
       {
+        // You can even set the id if you don't want Event Grid to stamp onto the event.
+        // id: "spongebob-random-id"
         subject: "Product",
         eventType: "OutOfStock",
         data: {

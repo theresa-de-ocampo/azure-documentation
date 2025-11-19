@@ -12,7 +12,8 @@
 10. [Azure Storage REST API](./10-storage-account-rest-api.md)
 11. [Shared Access Signatures](./11-sas.md)
 12. [Microsoft Graph](./12-ms-graph.md)
-13. [More Reads](./13-exam.md)
+13. [Cosmos DB](./13-cosmos-db.md)
+14. [More Reads](./13-exam.md)
 
 ## Mini Apps
 

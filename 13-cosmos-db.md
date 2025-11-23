@@ -250,7 +250,7 @@ Each logical partition = items with the same parition key value. The partition k
 **Cons**
 
 - Not scalable if you have lots of small unrelated documents — because you lose the benefit of grouping related items together.
-- You can't do efficient queries like <i>"get all families in Cavite"</i> since you'd have to query across all paritions.
+- You can't do efficient queries like <i>"get all families in Cavite"</i> since you'd have to query across all partitions.
 
 #### Option 2: `/address/city`
 
@@ -280,13 +280,13 @@ Each logical partition = items with the same parition key value. The partition k
 
 #### Logical Partitions
 
-There's no limit to the number of logical paritions in a container. Each logical partition can store up to 20 GB of data. Effective partition keys have a wide range of possible values such that it wouldn't grow up to 20 GB.
+There's no limit to the number of logical partitions in a container. Each logical partition can store up to 20 GB of data. Effective partition keys have a wide range of possible values such that it wouldn't grow up to 20 GB.
 
 #### Physical Partitions
 
 Physical partitions are an internal system implementation, and Azure Cosmos DB fully manages them. The number of physical partitions in a container depends on these characteristics.
 
-- The amount of throughput provisioned (each individual physical partition can provide a throughput of up to 10,000 request units per second). The 10,000 RU/s limit for physical partitions implies that logical paritions also have a 10,000 RU/s limit, as each logical partition is only mapped to one physical partition.
+- The amount of throughput provisioned (each individual physical partition can provide a throughput of up to 10,000 request units per second). The 10,000 RU/s limit for physical partitions implies that logical partitions also have a 10,000 RU/s limit, as each logical partition is only mapped to one physical partition.
 - The total data storage (each individual physical partition can store up to 50 GB of data).
 
 ## [Point Reads vs. Queries](https://devblogs.microsoft.com/cosmosdb/point-reads-versus-queries/)

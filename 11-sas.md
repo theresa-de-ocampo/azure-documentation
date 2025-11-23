@@ -206,7 +206,7 @@ https://gourmade0storage.blob.core.windows.net/north?sp=rl&st=2025-08-23T04:47:5
   </tbody>
 </table>
 
-Notice that it uses `sr` and not `srt`. If you try to to use this SAS URL to attach to a Storage Account or Service, you'll get an error.
+Notice that it uses `sr` and not `srt`. If you try to use this SAS URL to attach to a Storage Account or Service, you'll get an error.
 
 ![The SAS is not a valid account SAS. An account SAS with service ('ss') and resource type ('srt') parameters is required.](assets/11-sas/03-error-container-level-sas.png)
 
@@ -246,7 +246,7 @@ You can just easily edit the expiration time of the Stored Access Policy without
 
 Whenever you create a SAS, you need to sign it. Instead of signing it with an access key, you can use a User Delegation Key instead. The User Delegation Key is the crendential that Microsoft Entra ID issued for your security principal.
 
-In order to generate a SAS via User Delegation Key, the currently signed in user musth have a role assigned with a permission to _Generate a user delegation key._
+In order to generate a SAS via User Delegation Key, the currently signed in user must have a role assigned with a permission to _Generate a user delegation key._
 
 Note that even if you assigned a _Storage Blob Data Reader_ role to a user, they won't be able to see anything from the portal. They'll just get _"No storage account to display"_. This is because _Storage Blob Data Reader_ is for the data plane access, not for the control or management access. You also need to assign the _Reader_ role.
 

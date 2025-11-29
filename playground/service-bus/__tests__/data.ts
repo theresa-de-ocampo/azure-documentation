@@ -77,14 +77,4 @@ const initialEvents = [
   }
 ];
 
-const followUpEvent = [
-  {
-    subject: EVENT.FULFILLED_ORDER,
-    body: {
-      orderId: session2.orderId,
-      shipmentId: session2.shipmentId
-    }
-  }
-];
-
-export { initialEvents, followUpEvent };
+export { initialEvents };

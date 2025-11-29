@@ -1,6 +1,5 @@
 import { DefaultAzureCredential } from "@azure/identity";
-import { EventGridPublisherClient } from "@azure/eventgrid";
-import { InputSchema } from "@azure/eventgrid";
+import { EventGridPublisherClient, type InputSchema } from "@azure/eventgrid";
 
 let client: EventGridPublisherClient<InputSchema> | undefined;
 

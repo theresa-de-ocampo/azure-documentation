@@ -1,10 +1,28 @@
 # Azure CLI Cheat Sheet
 
+## Set-Up
+
 If `az login` keeps on failing, disable the Windows broker.
 
 ```bash
 az config set core.enable_broker_on_windows=false
 ```
+
+## Resource Group
+
+```bash
+az group delete \
+  --name <group-name> |
+  --no-wait
+```
+
+```bash
+az group create \
+  --location <location>
+  --name <group-name>
+```
+
+## Azure App Service
 
 ```bash
 az webapp up -g $resourceGroup -n $appName --html
@@ -23,6 +41,77 @@ az webapp log tail \
   --name <app-name>
 ```
 
+Operates at the Application Layer
+
+```bash
+az webapp cors add \
+  -g myResourceGroup \
+  -n MyWebApp \
+  --allowed-origins https://myapps.com
+```
+
+### Traffic Routing
+
+The `az webapp traffic-routing` has only 3 possible actions:
+
+- `clear`
+- `set`
+- `show`
+
+```bash
+az webapp traffic-routing set \
+  --resource-group gourmade-rg \
+  --name gourmade-admin \
+  --distribution staging=50
+```
+
+```bash
+az webapp traffic-routing show \
+  --resource-group gourmade-rg \
+  --name gourmade-admin
+```
+
+```
+[
+  {
+    "actionHostName": "quasset-erp-staging.azurewebsites.net",
+    "changeDecisionCallbackUrl": null,
+    "changeIntervalInMinutes": null,
+    "changeStep": null,
+    "maxReroutePercentage": null,
+    "minReroutePercentage": null,
+    "name": "staging",
+    "reroutePercentage": 50.0
+  }
+]
+```
+
+### Managed Identity
+
+The `az webapp identity` has only 3 possible actions:
+
+- `assign`
+- `remove`
+- `show`
+
+### Access Restrictions
+
+Operates at the Network Layer
+
+```bash
+az webapp config access-restriction add \
+  --resource-group MyResourceGroup \
+  --name MyWebApp \
+  --rule-name Developers \
+  --action Allow \
+  --ip-address 130.220.0.0/27 \
+  --priority 200
+```
+
+## Azure Storage Account
+
+In Azure CLI, the `@` symbol is a convention used to instruct the CLI to load the value for a parameter from a local file. This is particularly useful for parameters that expect complex JSON input. See another example from [az deployment group](https://learn.microsoft.com/en-us/cli/azure/deployment/group?view=azure-cli-latest#az-deployment-group-create)
+
 ```bash
 az storage account management-policy create \
   --account-name <storage-account> \
@@ -38,6 +127,19 @@ az storage account create \
   --sku Standard_LRS
 ```
 
+```bash
+az storage container policy create \
+  --account-name <storage account name \
+  --acount-key <storage account key> \
+  --container-name <container name> \
+  --name <stored access policy identifier> \
+  --start <start time UTC datetime> \
+  --expiry <expiry time UTC datetime> \
+  --permissions <(a)dd, (c)reate, (d)elete, (l)ist, (r)ead (w)rite>
+```
+
+## Azure Cosmos DB
+
 This will return a `documentEndpoint` in the response.
 
 ```bash
@@ -52,18 +154,6 @@ Retrieves the `primaryMasterKey`
 az cosmosdb keys list \
   --name <cosmos-db-account-name> \
   --resource-group <group-name>
-```
-
-```bash
-az group delete \
-  --name <group-name> |
-  --no-wait
-```
-
-```bash
-az group create \
-  --location <location>
-  --name <group-name>
 ```
 
 ## Container Registries
@@ -224,17 +314,6 @@ Container app created. Access your app at https://gourmade-quiz.happypebble-d944
 "gourmade-quiz.happypebble-d9440b1a.southeastasia.azurecontainerapps.io"
 ```
 
-```bash
-az storage container policy create \
-  --account-name <storage account name \
-  --acount-key <storage account key> \
-  --container-name <container name> \
-  --name <stored access policy identifier> \
-  --start <start time UTC datetime> \
-  --expiry <expiry time UTC datetime> \
-  --permissions <(a)dd, (c)reate, (d)elete, (l)ist, (r)ead (w)rite>
-```
-
 Builds and deploys the container app using the Dockerfile in the root of the repository.
 
 ```bash
@@ -311,7 +390,7 @@ az keyvault key purge \
 
 ```bash
 az keyvault key set-attributes \
-  --vault-name gourmad-kv \
+  --vault-name gourmade-kv \
   --name SigningKey \
   [--enabled {false, true}]
   [--expires]
@@ -394,4 +473,32 @@ az eventgrid topic key list \
   --name $topicName \
   --query "key1" \
   --output tsv
+```
+
+## Azure Event Grid
+
+`--name` can also be `--event-hub-name`
+
+```bash
+az eventhubs eventhub create \
+  --resource-group MyResourceGroup \
+  --namespace-name MyNamespaceName \
+  --name MyEventHubName \
+  --partition-count 12
+```
+
+```bash
+az eventhubs eventhub update \
+  --resource-group MyResourceGroup \
+  --namespace-name MyNamespaceName \
+  --name MyEventHubName \
+  --partition-count 12
+```
+
+```bash
+az eventhubs eventhub consumer-group create \
+  --resource-group MyResourceGroup \
+  --namespace-name MyNamespaceName \
+  --eventhub-name MyEventHubName \
+  --name MyConsumerGroupName \
 ```

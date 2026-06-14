@@ -113,3 +113,116 @@ If you are choosing managed identity while creating service connection in Azure 
 - As soon as Azure DevOps reaches the task for pushing a docker image, it will throw _"unauthorized: Invalid clientid or client secret."_
 - Delete the expired secret and create a new one at the App Registrations.
 - Edit the Service Connection, and hit save. It's okay if no actual changes were made. While saving, it will automatically refresh the service connection credentials.
+
+## [Workload Identity Federation](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation)
+
+> Workload Identity Federation (WIF) is a security framework that allows applications and workloads to authenticate to cloud services using short-lived tokens. It completely eliminates the need to manage and store long-lived credentials like passwords, API keys, or service account keys.
+
+Workload Identity Federation enables secure access to Microsoft Entra protected resources without managing secrets.
+
+You can use workload identity federation in scenarios such as GitHub Actions, workloads running in Kubernetes, or workloads running in compute platforms outside of Azure.
+
+### Why use workload identity federation?
+
+Typically, a software workload (such as an application, service, script, or container-based application) needs an identity in order to authenticate and access resources or communicate with other services.
+
+When these workloads run on Azure, you can use managed identities and the Azure platform manages the credentials for you.
+
+But. For a software workload running outside of Azure, or those running in Azure but use app registrations for their identities, you need to use application credentials (a secret or certificate) to access Microsoft Entra protected resources (such as Azure, Microsoft Graph, Microsoft 365, or third-party resources).
+
+These credentials pose a security risk and have to be stored securely and rotated regularly. You also run the risk of service downtime if the credentials expire.
+
+You use Workload Identity Federation to configure user-assigned managed identity or app registration in Microsoft Entra ID to **trust tokens** from an external idendity provider (IdP), such as GitHub or Google.
+
+Once that trust relationship is created, your external software workload exchanges trusted tokens from the external IdP for access tokens from Microsoft Identity platform. Your software workload then uses that access token to access the Microsoft Entra protected resources.
+
+This way, you eliminate the maintenance burden of manually managing credentials and eliminates the risk of leaking secrets or having certificates expire.
+
+### How it works
+
+The steps for configuring the trust relationship differs, depending on the scenario and external IdP. That is, the federated credential must have already been configured before running the external workload. The workflow for exchanging an external token for an access token is the same, however, for all scenarios.
+
+![Workflow Identity Federation](assets/01-continuously-deploy-containers/10-workflow-identity-federation.png)
+
+1. The external workload (such as GitHub Actions workflow) requests a token from from the external IdP (such as GitHub).
+2. The external IdP issues an OIDC token to the external workload.
+3. The external workload (e.g., the sign in action in a GitHub workflow) sends the token to Microsoft Identity platform and requests an access token.
+4. Microsoft Identity Platform checks the trust relationship on the user-assigned managed identity or app registration and validates the external token against the OpenID Connect (OIDC) issuer URL on the external IdP.
+5. When the checks are satisfied, Microsoft Identity platform issues an access token to the external workload.
+6. The external workload accesses Microsoft Entra protected resources using the access token from Microsoft Identity platform. A GitHub Actions workflow, for example, uses the access token to publish a web app to Azure App Service.
+
+### How it works in Azure DevOps
+
+At <a href="#7-create-an-azure-resource-manager-service-connection-for-the-deployment-stage">step #7</a>, this is the setup point that leads to the federated credential being created.
+
+More precisely, Azure DevOps automatically handles:
+
+1. Creating an app registration / service principal.
+2. Creating a federated credential on that app registration.
+3. Setting the federated credential values:
+   - Issuer: Azure DevOps OIDC issuer URL `https://vstoken.dev.azure.com/{organization-id}`
+   - Subject: `sc://org/project/service-connection-name` where `sc` stands for Service Connection
+   - Audience: `api://AzureADTokenExchange`
+4. Assigning Azure RBAC permission based on the selected scope.
+
+![Federated Credentials](assets/01-continuously-deploy-containers/11-federated-credentials.png)
+
+![Federated Credential Details](assets/01-continuously-deploy-containers/12-federated-credential-details.png)
+
+**Explicit subject identifier** means Entra ID will validate the token using one exact `subject` value.
+
+```
+Only accept an OIDC token if its subject claim is exactly:
+sc://OrisonX/Gourmade/Gourmade
+```
+
+That is different from **Claims matching expression** which would allow a pattern/rule instead of one exact value.
+
+The workflow is then the same:
+
+1. The Azure DevOps pipeline job requests an OIDC token from Azure DevOps.
+   ```
+   External Workload = Azure DevOps Pipeline/Job
+   External IdP = Azure DevOps Token Service
+   ```
+2. Azure DevOps issues a short-lived OIDC token to the pipeline job.
+3. The Azure DevOps task sends that OIDC token to Microsoft Entra ID and requests an access token.
+4. Microsoft Entra ID checks the federated credential on the app registration or user-assigned managed identity.
+5. If the checks pass, Microsoft Entra ID issues an Azure access token to the Azure DevOps pipeline job.
+6. The Azure DevOps pipeline uses that Azure access token to access Azure resources.
+
+### How it fits into the picture
+
+The mental model is:
+
+- **Identity**: Who is Azure DevOps acting as?
+- **Authentication**: How does Azure DevOps prove it can act as that identity?
+- **Authorization**: What is that identity allowed to do?
+
+Workload Identity Federation is only one possible authetication method.
+
+#### ARM Service Connection using Workload Identity Federation
+
+- **Identity**: App Registration / Service Principal
+- **Authentication**: Workload Identiy Federation
+- **Authorization**: Contributor on resource group
+
+#### ARM Service Connection using Client Secret
+
+- **Identity**: App Registration / Service Principal
+- **Authentication**: Client Secret
+- **Authorization**: Contributor on resource group
+
+#### Docker Registry Service Connection using Service Principal
+
+- **Identity**: App Registration / Service Principal
+- **Authentication**: Client Secret or Token-Based Credential
+- **Authorization**: AcrPush on Azure Container Registry
+
+#### Publish Profile Deployment (Not Recommended)
+
+- **Identity**: App Service Publish Profile
+- **Authentication**: Publish Profile username & password. Basic authentication is disabled by default on all newly created App Services. To toggle this on, go to App Service > _Configuration_ > _SCM Basic Auth Publishing Credentials_.
+- **Authorization**: Deploy to that specific App Service
+
+App Registration or Managed Identity answers "**who are you?**", while Workload Identity Federation, client secret, certificate, managed identity login, or publish profile answers "**how do you prove it?**".

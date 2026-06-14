@@ -1,6 +1,6 @@
 # [Application Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/app/nodejs)
 
-Even without installing the App Insights SDK into your Node.js app, you'll already receive logs. Unlike App Service Logs, it won't automatically capture any telemetry.
+Even without installing the App Insights SDK into your Node.js app, you'll already receive logs. Unlike App Service Logs (e.g., via `console.logs()`), it won't automatically capture any telemetry.
 
 ```http
 GET /robots933456.txt
@@ -67,3 +67,40 @@ Use the logs at the Deployment Center when an App Service is failing to start. F
 ## Costing
 
 The first 5 GB per month per billing account are free. If Application Insights is making your app not profitable, have a look at [Azure Application Insights - How not to burn money using it](https://medium.com/@beyerleinf/azure-application-insights-how-not-to-burn-money-using-it-5f1bbe5816b4).
+
+## `@azure/logger`
+
+The `@azure/logger` package can be used to enable internal logs from the Azure SDKs. It best fits as a troubleshooting tool when you want to inspect Azure SDK behavior especially authentication, retries, HTTP requests, or why a call to Storage, Service Bus, Key Vault, etc. is failing.
+
+SDKs like `@azure/identity`, `@azure/storage-blob`, and `@azure/service-bus` are already instrumented to use the Azure SDK logging mechanism. You usually do not need to manually install `@azure/logger`, you just have to enable it which can easily be done by just setting the `AZURE_LOG_LEVEL` environment variable.
+
+- `console.log` goes to `stdout`; in App Service, these can appear in App Service Logs / Log Stream.
+- Application Insights SDK goes to Application Insights / Azure Monitor
+- `@azure/logger` by default, writes to `stderr`.
+
+Azure App Service often captures and aggregates `stdout` and `stderr` into the same unified log files or monitoring views. Even though Azure merges them for easier reading, individual log rows may include metadata indicating which stream the text originally came from.
+
+Note that `stderr` just means that this is the default data stream where programs can send messages and diagnostics. It does not mean that only error messages go into here.
+
+It is possible to redirect the logging output from the Azure SDKs by overriding the `AzureLogger.log` method. This may be useful if you want to redirect logs to a location other than `stderr`.
+
+```javascript
+import appInsights from "applicationinsights";
+import { AzureLogger, setLogLevel } from "@azure/logger";
+
+// 1. Initialize Application Insights
+appInsights.setup(process.env.APPLICATIONINSIGHTS_CONNECTION_STRING).start();
+
+const client = appInsights.defaultClient;
+
+// 2. Redirect Azure SDK logs to Application Insights
+AzureLogger.log = (...args) => {
+  client.trackTrace({
+    message: args.join(" "),
+    severity: appInsights.Contracts.SeverityLevel.Information
+  });
+};
+
+// 3. Enable Azure SDK logging
+setLogLevel("info");
+```
